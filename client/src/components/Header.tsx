@@ -7,7 +7,7 @@ export function Header() {
     const user = useStore((state) => state.user);
 
     return (
-        <header className="border-b-2 border-gray-200 bg-white shadow-m sticky top-0 z-50">
+        <header className="border-b-2 h-15 flex items-center border-gray-200 bg-white shadow-m sticky top-0 z-50">
             <div className="w-11/12 mx-auto  flex justify-between items-center py-2 px-2">
                 <Link to={"/"} className=" " >
                     <img src={engineerFlow} alt="engineerFlow icon" className='sm:w-[10rem] w-[8rem]  transition-all duration-500 ease-in-out' />
