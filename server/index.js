@@ -6,8 +6,8 @@ PORT = process.env.PORT || 2026
 const cors = require("cors")
 const { connection } = require("./config/database")
 app.use(cors({
-    // origin: "https://my-form-client.vercel.app",
-    origin: "*",
+    origin: "https://engineering-resource-management-sys-livid.vercel.app",
+    // origin: "*",
     credentials: true
 }))
 
