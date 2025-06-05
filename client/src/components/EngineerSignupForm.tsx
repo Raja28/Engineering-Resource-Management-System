@@ -35,7 +35,7 @@ export function EngineerSignupForm({ handleSubmit, register, errors, setShowForm
 
 
         try {
-           const res =  await userSignup(normalizedData);
+           await userSignup(normalizedData);
           
             toast.success("Signup successful");
             navigate("/dashboard");
