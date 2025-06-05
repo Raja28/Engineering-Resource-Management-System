@@ -1,18 +1,13 @@
-import { useForm } from "react-hook-form";
+
 import { useStore } from "../store";
-import type { FormData } from "../types/form";
-import { use, useState } from "react";
+
 import { useNavigate } from "react-router";
 
-const _status = "loading";
+// const _status = "loading";
 
 export function EngineerDashboard() {
     const user = useStore((state) => state.user);
-
-    const { register, formState: { errors } } = useForm<FormData>()
-    const [updateUserInfo, SetUpdateUserInfo] = useState(false);
-
-    const status = useStore((state) => state.status);
+    // const status = useStore((state) => state.status);
     const clearUser = useStore((state) => state.clearUser);
     const navigate = useNavigate()
     console.log(user);
@@ -110,7 +105,7 @@ export function EngineerDashboard() {
                                         id="skills"
                                         className="border-2 border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                                         placeholder="100 for full-time or 50 for part-time"
-                                        value={user?.skills.join(", ")}
+                                        value={user?.skills?.join(", ") || ""}
                                         disabled={true}
                                     />
 
