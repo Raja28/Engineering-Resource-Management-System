@@ -1,11 +1,8 @@
 
 import engineerFlow_image from "../assets/engineerFlow.png"
-
 import {useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
-
 import { useStore } from "../store";
-// import { useState } from "react";
 import toast from "react-hot-toast";
 import type { LoginData } from "../types/form";
 
@@ -17,14 +14,12 @@ interface Props {
 
 export function LoginForm({ setShowForm }: Props) {
     const { register, handleSubmit, formState: { errors } } = useForm<LoginData>()
-    // const [showLoginForm, setShowLoginForm] = useState(true)
-    // const user = useStore((state) => state.user);
     const status = useStore((state) => state.status);
     const userLogin = useStore((state) => state.userLogin)
     const navigate = useNavigate();
+    
     async function loginHandler(data:LoginData) {
-     
-        console.log(data);
+  
         try {
             await userLogin(data);
             toast.success("Login successful");
