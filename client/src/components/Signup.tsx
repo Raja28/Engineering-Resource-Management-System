@@ -2,14 +2,12 @@
 import engineerFlow_image from "../assets/engineerFlow.png"
 
 import { useForm } from "react-hook-form"
-
-import { useStore } from "../store";
 import { useState } from "react";
 import { EngineerSignupForm } from "./EngineerSignupForm";
 import { ManagerSignupForm } from "./ManagerSignupForm";
 import type { FormData } from "../types/form";
 
-const _status = "loading"
+
 const engineer = "engineer"
 const manager = "manager"
 
@@ -19,17 +17,10 @@ interface Props {
 
 export function Signup({ setShowForm }: Props) {
 
-    const { register, handleSubmit, setValue, formState: { errors } } = useForm<FormData>()
-    const user = useStore((state) => state.user);
-    const status = useStore((state) => state.status);
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>()
+ 
     const [formType, setFormType] = useState(manager)
 
-
-    function loginHandler(data: FormData) {
-        // e.preventDefault()
-        console.log(data);
-
-    }
 
     return (
         <section className="w-11/12 mx-auto h-fit  flex justify-center items-center">
