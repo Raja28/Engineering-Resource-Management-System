@@ -2,6 +2,7 @@
 import { useStore } from "../store";
 
 import { useNavigate } from "react-router";
+import { AssignmentList } from "./AssignmentList";
 
 // const _status = "loading";
 
@@ -115,6 +116,13 @@ export function EngineerDashboard() {
                     </div>
                 </div>
             </section>
+
+            <section className="w-11/12 my-8 mx-auto flex justify-center items-center ">
+                <div className="my-4 w-full px-5">
+                    <AssignmentList />
+                </div>
+            </section>
+
 
         </>
     );
