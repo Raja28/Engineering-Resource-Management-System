@@ -142,8 +142,24 @@ exports.login = async (req, res) => {
         const expiresIn = "24h"; // 24 hours in seconds
         const token = jwt.sign(tokenPayload, process.env.JWT_SECRET, { expiresIn });
 
+      
+
         const user = registeredUser.toObject();
         delete user.password
+
+          if(registeredUser.role === manager) {
+            user.projects = await Project.find({ managerId: registeredUser._id })
+        }else {
+            user.assignments = await Assignment.find({ engineerId: registeredUser._id })
+        }
+
+        const userAssignments = await Assignment.find({ engineerId: registeredUser._id }).populate("projectId");
+
+        if (userAssignments.length > 0) {
+            user.assignments = userAssignments
+        } else {
+            user.projects = [];
+        }
 
         user.profileImage = `https://api.dicebear.com/5.x/initials/svg?seed=${registeredUser?.name}`
 
