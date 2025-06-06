@@ -1,7 +1,8 @@
 import { type StateCreator } from 'zustand';
 import axios from "axios";
-import { ADD_PROJECT_API, USER_LOGIN_API, USER_SIGNUP_API } from '../utils/apis';
+import { ADD_PROJECT_API, DELETE_PROJECT_API, UPDATE_PROJECT_API, USER_LOGIN_API, USER_SIGNUP_API } from '../utils/apis';
 import type { FormData, LoginData } from '../types/form';
+import type { ProjectForm } from '../types/project';
 
 export interface User {
   name: string;
@@ -16,6 +17,7 @@ export interface User {
   createdAt?: string;
   updatedAt?: string;
   projects?: any[]
+  assignments?: any[]
 }
 
 export interface UserSlice {
@@ -26,6 +28,9 @@ export interface UserSlice {
   userSignup: (data: FormData) => Promise<void>;
   userLogin: (data: LoginData) => Promise<void>;
   clearUser: () => void;
+  addProject: (projectData: ProjectForm) => Promise<void>;
+  deleteProject: (projectData: string) => Promise<void>;
+  updateProject: (projectData: ProjectForm) => Promise<void>;
 }
 
 export const createUserSlice: StateCreator<UserSlice, [], [], UserSlice> = (set, get) => ({
@@ -82,7 +87,7 @@ export const createUserSlice: StateCreator<UserSlice, [], [], UserSlice> = (set,
     }
   },
 
-  addProject: async (projectData: any) => {
+  addProject: async (projectData: ProjectForm) => {
     set({ status: "loading", error: null });
     try {
       const token = sessionStorage.getItem("token");
@@ -104,7 +109,7 @@ export const createUserSlice: StateCreator<UserSlice, [], [], UserSlice> = (set,
         if (currentUser) {
           const updatedUser = {
             ...currentUser,
-            projects: [...(currentUser.projects || []), newProject],
+            projects: [newProject, ...(currentUser.projects || [])],
           };
 
           set({ user: updatedUser, status: "success" });
@@ -122,7 +127,88 @@ export const createUserSlice: StateCreator<UserSlice, [], [], UserSlice> = (set,
       });
       return Promise.reject(err?.response?.data);
     }
+  },
+
+  updateProject: async (projectData: ProjectForm) => {
+    set({ status: "loading", error: null });
+    try {
+      const token = sessionStorage.getItem("token");
+      if (!token) throw new Error("No token found");
+
+      const res = await axios.post(UPDATE_PROJECT_API, projectData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.data.success) {
+
+        const updatedProject = res.data.project;
+        const currentUser = get().user;
+
+        if (currentUser) {
+          const updatedProjects = currentUser.projects?.map((project) =>
+            project._id === updatedProject._id ? updatedProject : project
+          );
+
+          const updatedUser = { ...currentUser, projects: updatedProjects };
+
+          set({ user: updatedUser, status: "success" });
+          sessionStorage.setItem("user", JSON.stringify(updatedUser));
+        } else {
+          throw new Error(res.data.message || "Failed to update project");
+        }
+      }
+      return res.data.project;
+
+    } catch (err: any) {
+      console.log("Error updating project:", err);
+
+      set({
+        error: err?.response?.data?.message || "Failed to update project",
+        status: "error",
+      });
+      return Promise.reject(err?.response?.data);
+    }
+  },
+
+  deleteProject: async (projectId: string) => {
+    set({ status: "loading", error: null });
+    try {
+      const token = sessionStorage.getItem("token");
+      if (!token) throw new Error("No token found");
+
+      const res = await axios.delete(`${DELETE_PROJECT_API}/${projectId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.data.success) {
+        const currentUser = get().user;
+
+        if (currentUser) {
+          const updatedProjects = currentUser.projects?.filter(
+            (project) => project._id !== projectId
+          );
+
+          const updatedUser = { ...currentUser, projects: updatedProjects };
+
+          set({ user: updatedUser, status: "success" });
+          sessionStorage.setItem("user", JSON.stringify(updatedUser));
+        } else {
+          throw new Error(res.data.message || "Failed to delete project");
+        }
+      }
+    } catch (err: any) {
+      set({
+        error: err?.response?.data?.message || "Failed to delete project",
+        status: "error",
+      });
+      return Promise.reject(err?.response?.data);
+    }
   }
+
 });
 
 // Utility functions for safely reading from sessionStorage
