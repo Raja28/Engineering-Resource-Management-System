@@ -148,7 +148,7 @@ exports.login = async (req, res) => {
         delete user.password
 
           if(registeredUser.role === manager) {
-            user.projects = await Project.find({ managerId: registeredUser._id })
+            user.projects = await Project.find({ managerId: registeredUser._id }).sort({ createdAt: -1 });
         }else {
             user.assignments = await Assignment.find({ engineerId: registeredUser._id })
         }
