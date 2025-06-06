@@ -1,6 +1,6 @@
 
 import engineerFlow_image from "../assets/engineerFlow.png"
-import {useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useForm } from "react-hook-form"
 import { useStore } from "../store";
 import toast from "react-hot-toast";
@@ -17,14 +17,14 @@ export function LoginForm({ setShowForm }: Props) {
     const status = useStore((state) => state.status);
     const userLogin = useStore((state) => state.userLogin)
     const navigate = useNavigate();
-    
-    async function loginHandler(data:LoginData) {
-  
+
+    async function loginHandler(data: LoginData) {
+
         try {
             await userLogin(data);
             toast.success("Login successful");
             navigate("/dashboard");
-        } catch (error:any) {
+        } catch (error: any) {
             console.log(error);
             toast.error(error?.message || "Login failed");
         }
@@ -98,8 +98,9 @@ export function LoginForm({ setShowForm }: Props) {
                     </div>
                     <div className=" flex justify-center">
                         <button type="submit"
+                            disabled={status === _status ? true : false}
                             className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
-                            Submit
+                            {status === _status ? "Please wait...":"Submit"}
                         </button>
                     </div>
                 </form>
