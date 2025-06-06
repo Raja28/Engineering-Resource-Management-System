@@ -1,14 +1,15 @@
 
 
 export interface ProjectForm {
+    projectId: string,
     name: String,
     description: String,
     startDate: Date,
-    engineer: string,
+    engineer?: string,
     endDate: Date,
-    requiredSkills: [String],
+    requiredSkills: string[] | string,
     teamSize: Number,
     status: 'planning' | 'active' | 'completed',
-    managerId: string
+    managerId?: string
 
 }
