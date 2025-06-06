@@ -89,7 +89,7 @@ export function ManagerDashboard() {
             <section className="w-full px-4 py-6 mt-6">
                 <div
 
-                    className="flex flex-wrap justify-center gap-6">
+                    className=" w-11/12 mx-auto flex flex-wrap justify-center gap-6">
                     {/* Left Card */}
                     <div className="max-w-xs w-full border shadow-md p-4 rounded-2xl flex flex-col items-center justify-center">
                         <div className="w-24 h-24 rounded-full overflow-hidden">
