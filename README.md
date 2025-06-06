@@ -4,6 +4,18 @@ EngineerFlow is a web application that manage engineering team assignments acros
 
 ---
 
+## 🔑 Demo Login Credentials
+
+### 👨‍💼 Manager Account
+- **Email:** rajadavid03@gmail.com  
+- **Password:** 1234
+
+### 👷 Engineer Account
+- **Email:** rja69100@gmail.com  
+- **Password:** 1234
+
+---
+
 ## 🚀 Features
 
 ### 🔐 Authentication & User Roles
