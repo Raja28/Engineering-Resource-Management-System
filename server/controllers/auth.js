@@ -155,10 +155,10 @@ exports.login = async (req, res) => {
 
         const userAssignments = await Assignment.find({ engineerId: registeredUser._id }).populate("projectId");
 
-        if (userAssignments.length > 0) {
+        if (user.role === engineer && userAssignments.length > 0) {
             user.assignments = userAssignments
         } else {
-            user.projects = [];
+            user.assignments = [];
         }
 
         user.profileImage = `https://api.dicebear.com/5.x/initials/svg?seed=${registeredUser?.name}`
